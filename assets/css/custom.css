@@ -1,0 +1,82 @@
+.header{
+  background-color: #242424;
+  border-top: none;
+  height: 50px;
+}
+.header .logo{
+  padding-top: 10px;
+}
+.header .logo b{
+  color: #ffffff;
+  font-size: 20px;
+}
+.container {
+  border: 0;
+  border-top: #242424 2px solid;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.menu-filter svg {
+  color: #242424;
+}
+.menu-search svg{
+  color: #242424;
+}
+
+.menubar h4 svg{
+  color: 	#DBDBDB;
+}
+
+.menubar h4.on svg{
+  color: #242424;
+}
+
+.menubar h4.on a {
+  color: #242424;
+}
+
+.menubar h5 svg{
+  color: 	#DBDBDB;
+}
+
+.menubar h5.on svg{
+  color: #242424;
+}
+
+.menubar ul li > strong.on:before {
+  background-color: #242424;
+}
+
+.menubar ul li > a.on {
+  color: #838B8B;
+}
+
+.menubar ul li > a.on:before {
+  background-color: #A9A9A9;
+}
+
+aside .contents {
+  background-color: #EEEEEE;
+  border-radius: 1px;
+  box-shadow: 0px 0px 5px #F2F2F2;
+  border: 1px solid #F2F2F2;
+  right: 18px;
+}
+
+aside .back-top{
+  background-color: #EEEEEE;
+  border-radius: 1px;
+  box-shadow: 0px 0px 5px #F2F2F2;
+  border: 1px solid #F2F2F2;
+  transition: all 1.5s;
+  right: 18px;
+}
+
+aside .contents-list a{
+  color: #242424
+}
+aside .contents .markdown-contents ol li>i {
+  color: #242424
+}

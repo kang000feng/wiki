@@ -1,0 +1,8 @@
+{
+  "name":"桐小木的个人Wiki",
+  "ver":"",
+  "logo":"assets/img/logo2.png",
+  "imports":[
+    "assets/css/custom.css"
+  ]
+}
