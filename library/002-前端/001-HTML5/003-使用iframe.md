@@ -1,7 +1,8 @@
-### 关于iframe
+# iframe的使用及全屏实现
+## 关于iframe
 其实在最开始学习html时就接触过iframe，那时候觉得这是一个low到爆的东西，用iframe远远不如使用div和css自定义布局来得优雅和自由。现在看来那时候的想法还是太天真了，iframe还是有不少地方有特殊的用途的。具体哪些地方我也不想研究，这里就主要说一下用到的一个地方：使用iframe全屏加载页面以使后续页面能够自动播放音乐。
 
-### iframe的使用
+## iframe的使用
 W3c iframe：http://www.w3school.com.cn/tags/tag_iframe.asp
 
 ```html
