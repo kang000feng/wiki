@@ -11,11 +11,15 @@
   font-size: 20px;
 }
 .container {
-  border: 0;
+  border: none;
   border-top: #242424 2px solid;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-bottom: 10px;
+}
+
+.menubar h4, .menubar h5{
+  border: 1px solid #FFFFFF;
 }
 
 .menu-filter svg {
@@ -34,6 +38,10 @@
 }
 
 .menubar h4.on a {
+  color: #242424;
+}
+
+.menubar h5.on a {
   color: #242424;
 }
 
@@ -79,4 +87,48 @@ aside .contents-list a{
 }
 aside .contents .markdown-contents ol li>i {
   color: #242424
+}
+
+@media screen and (max-width: 720px){
+  .header .header-inner{
+    margin-left: 5px;
+  }
+  .header .logo img{
+    height: 30px;
+  }
+  .container {
+    margin-top: 50px;
+  }
+  .menubar h4.on a {
+    color: #FFFFFF;
+  }
+  .menubar h5.on a {
+    color: #FFFFFF;
+  }
+  .menubar ul li > a.on {
+    color: #CCCCCC;
+  }
+
+  .menu-filter svg {
+    color: #FFFFFF;
+  }
+  .menu-search svg{
+    color: #FFFFFF;
+  }
+
+  .menubar h4 svg{
+    color: #FFFFFF;
+  }
+
+  .menubar h4.on svg{
+    color: #CCCCCC;
+  }
+
+  .menubar h5 svg{
+    color: #FFFFFF;
+  }
+
+  .menubar h5.on svg{
+    color: #CCCCCC;
+  }
 }
