@@ -10,12 +10,17 @@
   color: #ffffff;
   font-size: 20px;
 }
+.header .logo i{
+  display: none;
+}
 .container {
   border: none;
   border-top: #242424 2px solid;
   border-radius: 5px;
   margin-top: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .menubar h4, .menubar h5{
@@ -70,7 +75,7 @@ aside .contents {
   border-radius: 1px;
   box-shadow: 0px 0px 5px #F2F2F2;
   border: 1px solid #F2F2F2;
-  right: 18px;
+  right: 10px;
 }
 
 aside .back-top{
@@ -79,7 +84,7 @@ aside .back-top{
   box-shadow: 0px 0px 5px #F2F2F2;
   border: 1px solid #F2F2F2;
   transition: all 1.5s;
-  right: 18px;
+  right: 10px;
 }
 
 aside .contents-list a{
