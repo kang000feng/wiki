@@ -29,5 +29,7 @@
 ##### 常用工具相关
 - **Git相关**
     - [使用Github Pages绑定多个二级域名](?file=010-常用工具相关/001-Git相关/001-使用Github Pages绑定多个二级域名 "使用Github Pages绑定多个二级域名")
+- **科学上网**
+    - [shadowsocks配置](?file=010-常用工具相关/002-科学上网/001-shadowsocks配置 "shadowsocks配置")
 
 ##### 个人爱好

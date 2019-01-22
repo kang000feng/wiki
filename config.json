@@ -4,5 +4,6 @@
   "logo":"assets/img/logo2.png",
   "imports":[
     "assets/css/custom.css"
-  ]
+  ],
+  "github-url":"https://github.com/IcedSoul/wiki/wiki"
 }
