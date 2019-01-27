@@ -11,9 +11,15 @@
     - [零碎知识点](?file=002-前端/001-HTML5/001-零碎知识点 "零碎知识点")
     - [关于Audio标签](?file=002-前端/001-HTML5/002-关于Audio标签 "关于Audio标签")
     - [使用iframe](?file=002-前端/001-HTML5/003-使用iframe "使用iframe")
+- **安全**
+    - [XSS注入](?file=002-前端/002-安全/001-XSS注入 "XSS注入")
 
 ##### 编程语言
 - **Java**
+    - **Java Collection**
+        - **Java Queue**
+            - [Java Queue Deque详细学习](?file=003-编程语言/001-Java/001-Java Collection/001-Java Queue/001-Java Queue Deque详细学习 "Java Queue Deque详细学习")
+            - [Java PriorityQueue](?file=003-编程语言/001-Java/001-Java Collection/001-Java Queue/002-Java PriorityQueue "Java PriorityQueue")
 - **C++**
     - [C++零碎知识](?file=003-编程语言/002-C++/001-C++零碎知识 "C++零碎知识")
     - [C++ STL map使用](?file=003-编程语言/002-C++/002-C++ STL map使用 "C++ STL map使用")
@@ -38,6 +44,8 @@
 ##### 操作系统
 
 ##### JavaWeb
+- **Spring**
+- **安全**
 
 ##### 个人项目
 
