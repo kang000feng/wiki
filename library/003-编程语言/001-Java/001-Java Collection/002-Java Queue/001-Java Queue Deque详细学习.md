@@ -17,7 +17,7 @@ Queue<String> q = new LinkedList<>();
 在Intellij IDEA中打开rt.jar  
 ![](assets/003/20190127-b8e816d1.png)  
 ![](assets/003/20190127-0ecbb83f.png)  
-在rt.jar里面找到/java/util,然后在util上右键使用Intellij IDEA自带的图形化工具（目录右键选择Diagrams->Show Diagrams->Java Class Disgrams），可以直接看到类图。
+在rt.jar里面找到/java/util,然后在util上右键使用Intellij IDEA自带的图形化工具（目录右键选择Diagrams->Show Diagrams->Java Class Disgrams），可以直接看到类图。  
 ![](assets/003/20190127-88c4467c.png)  
 从这个图中可以看出，Queue继承了Collection接口。  
 Collection相关的操作我之后会看，那边写好之后这边我会加一个链接跳过去，所以这里就不再细说。
@@ -76,7 +76,7 @@ public interface Queue<E> extends Collection<E> {
 
  其实这三对方法后者都是前者的不抛出异常的使用方法，我有点好奇的是后者不会抛出异常是否在性能上有所牺牲，等后续Queue的所有实现看完之后可以查看它们具体的实现并且做一下实验，这里暂时不再继续深入研究，目前来在容量无限时，用前三个方法比较合适。在容量有显示，推荐用后三个方法来代替前三个方法。
  ## Deque接口
-从刚刚的图中我们可以继续向下寻找Queue的子类：
+从刚刚的图中我们可以继续向下寻找Queue的子类：  
 ![](assets/003/20190127-03c3abc6.png)  
 其中左边一个包展开之后是非常复杂的类，与线程相关，应该是线程安全的一些实现。这里暂且不深入研究，先看显示的一些继承和实现。  
 Deque接口实现了Queue接口，不过拥有更多的方法，Deque的解释是双端队列，即在两端都可以进行读写的队列。  
