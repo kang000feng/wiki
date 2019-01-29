@@ -38,6 +38,10 @@
     - [最长上升子序列](?file=004-简单算法/005-动态规划/001-最长上升子序列 "最长上升子序列")
     - [最长公共子序列](?file=004-简单算法/005-动态规划/002-最长公共子序列 "最长公共子序列")
 
+##### 部署&运维
+- **持续集成**
+    - [Jenkins CI with Docker Compose](?file=009-部署&运维/001-持续集成/001-Jenkins CI with Docker Compose "Jenkins CI with Docker Compose")
+
 ##### 常用工具相关
 - **Git相关**
     - [使用Github Pages绑定多个二级域名](?file=010-常用工具相关/001-Git相关/001-使用Github Pages绑定多个二级域名 "使用Github Pages绑定多个二级域名")
