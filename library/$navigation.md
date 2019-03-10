@@ -23,6 +23,7 @@
             - [Java Queue Deque详细学习](?file=003-编程语言/001-Java/001-Java Collection/002-Java Queue/001-Java Queue Deque详细学习 "Java Queue Deque详细学习")
             - [Java PriorityQueue](?file=003-编程语言/001-Java/001-Java Collection/002-Java Queue/002-Java PriorityQueue "Java PriorityQueue")
             - [Java ArrayDeque](?file=003-编程语言/001-Java/001-Java Collection/002-Java Queue/003-Java ArrayDeque "Java ArrayDeque")
+            - [Java LinkedList](?file=003-编程语言/001-Java/001-Java Collection/002-Java Queue/004-Java LinkedList "Java LinkedList")
 - **C++**
     - [C++零碎知识](?file=003-编程语言/002-C++/001-C++零碎知识 "C++零碎知识")
     - [C++ STL map使用](?file=003-编程语言/002-C++/002-C++ STL map使用 "C++ STL map使用")
@@ -67,6 +68,7 @@
         - [10月新番记录](?file=012-个人爱好/001-动画/002-2018年10月新番/001-10月新番记录 "10月新番记录")
     - **旧番**
         - [记录及评价](?file=012-个人爱好/001-动画/003-旧番/001-记录及评价 "记录及评价")
+        - [番剧整理推荐](?file=012-个人爱好/001-动画/003-旧番/002-番剧整理推荐 "番剧整理推荐")
 - **漫画**
     - **日漫**
         - [五等分的新娘](?file=012-个人爱好/002-漫画/001-日漫/001-五等分的新娘 "五等分的新娘")
@@ -80,3 +82,4 @@
     - **动画电影**
         - **国产动画电影**
             - [白蛇缘起](?file=012-个人爱好/005-电影/003-动画电影/003-国产动画电影/001-白蛇缘起 "白蛇缘起")
+- [别走，吃我一发安利！](?file=012-个人爱好/006-别走，吃我一发安利！ "别走，吃我一发安利！")

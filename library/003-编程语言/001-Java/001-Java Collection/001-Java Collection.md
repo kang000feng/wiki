@@ -91,5 +91,5 @@ Java Collection是Java非常重要的一个接口，Queue，List和Set都是Coll
 ```
 ## AbstractCollection
 
-除此之外Abstract是实现了Collection接口的一个抽象类，它实现了Collection接口的部分方法，其实后面可以看到有不少实现类都继承了这个抽象类。  
+除此之外AbstractConllection是实现了Collection接口的一个抽象类，它实现了Collection接口的部分方法，其实后面可以看到有不少实现类都继承了这个抽象类。  
 从这里可以总结出一种比较优秀的设计思想：当一个接口有很多派生子类时，可以实现一个抽象类，子类可以选择实现接口的同时继承这个抽象类，那么可以减少重复性的开发。
