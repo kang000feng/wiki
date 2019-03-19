@@ -61,6 +61,7 @@
     - [Spring 自定义注解](?file=007-JavaWeb/001-Spring/001-Spring 自定义注解 "Spring 自定义注解")
     - [在Spring启动时执行方法](?file=007-JavaWeb/001-Spring/002-在Spring启动时执行方法 "在Spring启动时执行方法")
 - **安全**
+- **项目**
 
 ##### 微服务
 - **Kubernetes**
@@ -71,6 +72,10 @@
 ##### 部署&运维
 - **持续集成**
     - [Jenkins CI with Docker Compose](?file=009-部署&运维/001-持续集成/001-Jenkins CI with Docker Compose "Jenkins CI with Docker Compose")
+- **监控**
+    - **分布式系统监控**
+    - **单体系统监控**
+        - [Kieker的学习与使用](?file=009-部署&运维/002-监控/002-单体系统监控/001-Kieker的学习与使用 "Kieker的学习与使用")
 
 ##### 常用工具相关
 - **Git相关**
