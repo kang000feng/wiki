@@ -51,9 +51,123 @@ Kieker.TraceAnalysis实现了Kieker的特殊功能，允许监视，分析和可
 
 但是看到这句话就有点虚了，我不是很理解什么叫做“name element Annotation”，当用这个时就需要加注解，那么这个是做什么用的，不用可以么，先往后看吧。  
 
+因为一些原因暂时没有继续往下看，先动手开始尝试使用。
 
-####
-', 	           "", 			   '', 			   '
+## 使用
 
+### 尝试
+
+接下来尝试了使用AspectJ，Spring等方式的Demo，都跑了起来并且收集到了监控结果。  
+剩下就是将Demo的成功演示复制到自己的项目上，目前这种方式几乎是没有侵入性的，如果能够这样实现的话就再好不过了。  
+
+新建maven项目，使用Demo代码，导入相关依赖执行成功。  
+
+新建Spring Boot项目，改动Demo代码导入缺少的几个依赖执行成功，排除Spring Boot依赖的问题。
+
+SpringBoot，SpringMVC项目使用自己代码添加配置和依赖后运行没有效果，目前猜想是运行方式的差异问题或者是包目录的问题，明天继续看。
+
+新建与目录，把示例几个类移动至对应文件夹下，运行能够获取到监控数据，可以排除目录结构的影响，那么导致一般Spring Boot项目和Spring MVC项目获取不到监控数据的原因很可能是因为Tomcat运行的原因，接下来再仔细查看一下。
+
+仔细想来这确实应该是容器的关系：普通的Java类知道直接调用，但是容器内部却是使用了一系列初始化和监听操作（具体的操作我也不太清楚），那从这个角度出发来看，Spring方式的监控就显得有些鸡肋了：现在使用Spring的项目基本都使用了Tomcat，Jetty或者类似的容器。或许看到后面会发现有别的用处吧，现在应该看的是使用Servlet的方式来进行监控的方法。或许到后面两者可以结合一下也说不定。
+
+现在想来使用AspectJ方式应该也是仅限于普通的Java应用吧，使用了容器的应该也是监控不了的。
+
+### JavaEE Servlet Container Example
+这个例子使用的容器是Jetty，并且使用了基于JavaEE Servlet API，Spring和AspectJ的探针，233刚刚的猜测都被这句话打脸了。原来基于容器的应用三种方式都能够使用，接下来具体运行尝试一下吧。这三种探针用于监控执行，条用路径和会话数据（execution,trace and session data）。
+
+> The example is prepared to use two alternative types of Kieker probes: either the Kieker Spring interceptor (default) or the Kieker AspectJ aspects. Both alternatives additionally use Kieker’s Servlet filter.
+
+从这句话的来看，貌似是Spring or AspectJ + Servlrt的方式，后面尝试并且确认一下。
+
+尝试之后发现确实是这个样子，使用Spring方式方式添加aop配置后，还要在web.xml里面配置一下filter，配置好之后就可以拿到监控数据。但是Spring Boot项目可能是因为配置有些问题，尚且没有拿到运行数据。
+
+Spring Boot项目尝试引入xml配置，可以获取到监控数据了。
+
+下一步应该尝试的是使用AspectJ的方式看是否能够获取到监控数据。
+
+尝试使用AspectJ方式时，发现按照文档中的命令行编译并且执行就能够正常运行，但是当自己在IDE里面编译运行时，就出现了错误，和在SpringMVC中尝试使用AspectJ方式出现的的错误一模一样。
+```
+三月 25, 2019 10:02:26 上午 kieker.monitoring.core.controller.WriterController newQueue
+警告: An exception occurred
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at kieker.monitoring.core.controller.WriterController.newQueue(WriterController.java:190)
+	at kieker.monitoring.core.controller.WriterController.<init>(WriterController.java:92)
+	at kieker.monitoring.core.controller.MonitoringController.<init>(MonitoringController.java:63)
+	at kieker.monitoring.core.controller.MonitoringController.createInstance(MonitoringController.java:82)
+	at kieker.monitoring.core.controller.MonitoringController$LazyHolder.<clinit>(MonitoringController.java:362)
+	at kieker.monitoring.core.controller.MonitoringController.getInstance(MonitoringController.java:355)
+	at kieker.monitoring.probe.aspectj.flow.operationExecution.AbstractAspect.<clinit>(AbstractAspect.java:42)
+	at com.intellij.rt.execution.application.AppMainV2$Agent.premain(AppMainV2.java:153)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.instrument.InstrumentationImpl.loadClassAndStartAgent(InstrumentationImpl.java:386)
+	at sun.instrument.InstrumentationImpl.loadClassAndCallPremain(InstrumentationImpl.java:401)
+Caused by: org.aspectj.lang.NoAspectBoundException: kieker.monitoring.probe.aspectj.flow.operationExecution.FullInstrumentationNoGetterAndSetter
+	at kieker.monitoring.probe.aspectj.flow.operationExecution.FullInstrumentationNoGetterAndSetter.aspectOf(FullInstrumentationNoGetterAndSetter.java:1)
+	at org.jctools.util.Pow2.roundToPowerOfTwo(Pow2.java:1)
+	at org.jctools.queues.ConcurrentCircularArrayQueue.<init>(ConcurrentCircularArrayQueue.java:43)
+	at org.jctools.queues.MpscArrayQueueL1Pad.<init>(MpscArrayQueue.java:28)
+	at org.jctools.queues.MpscArrayQueueProducerIndexField.<init>(MpscArrayQueue.java:54)
+	at org.jctools.queues.MpscArrayQueueMidPad.<init>(MpscArrayQueue.java:76)
+	at org.jctools.queues.MpscArrayQueueProducerLimitField.<init>(MpscArrayQueue.java:103)
+	at org.jctools.queues.MpscArrayQueueL2Pad.<init>(MpscArrayQueue.java:125)
+	at org.jctools.queues.MpscArrayQueueConsumerIndexField.<init>(MpscArrayQueue.java:151)
+	at org.jctools.queues.MpscArrayQueueL3Pad.<init>(MpscArrayQueue.java:178)
+	at org.jctools.queues.MpscArrayQueue.<init>(MpscArrayQueue.java:199)
+	... 18 more
+
+Exception in thread "main" java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.instrument.InstrumentationImpl.loadClassAndStartAgent(InstrumentationImpl.java:386)
+	at sun.instrument.InstrumentationImpl.loadClassAndCallPremain(InstrumentationImpl.java:401)
+Caused by: java.lang.ExceptionInInitializerError
+	at kieker.monitoring.core.controller.MonitoringController.getInstance(MonitoringController.java:355)
+	at kieker.monitoring.probe.aspectj.flow.operationExecution.AbstractAspect.<clinit>(AbstractAspect.java:42)
+	at com.intellij.rt.execution.application.AppMainV2$Agent.premain(AppMainV2.java:153)
+	... 6 more
+Caused by: java.lang.IllegalStateException: java.lang.reflect.InvocationTargetException
+	at kieker.monitoring.core.controller.WriterController.newQueue(WriterController.java:202)
+	at kieker.monitoring.core.controller.WriterController.<init>(WriterController.java:92)
+	at kieker.monitoring.core.controller.MonitoringController.<init>(MonitoringController.java:63)
+	at kieker.monitoring.core.controller.MonitoringController.createInstance(MonitoringController.java:82)
+	at kieker.monitoring.core.controller.MonitoringController$LazyHolder.<clinit>(MonitoringController.java:362)
+	... 9 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at kieker.monitoring.core.controller.WriterController.newQueue(WriterController.java:190)
+	... 13 more
+Caused by: org.aspectj.lang.NoAspectBoundException: kieker.monitoring.probe.aspectj.flow.operationExecution.FullInstrumentationNoGetterAndSetter
+	at kieker.monitoring.probe.aspectj.flow.operationExecution.FullInstrumentationNoGetterAndSetter.aspectOf(FullInstrumentationNoGetterAndSetter.java:1)
+	at org.jctools.util.Pow2.roundToPowerOfTwo(Pow2.java:1)
+	at org.jctools.queues.ConcurrentCircularArrayQueue.<init>(ConcurrentCircularArrayQueue.java:43)
+	at org.jctools.queues.MpscArrayQueueL1Pad.<init>(MpscArrayQueue.java:28)
+	at org.jctools.queues.MpscArrayQueueProducerIndexField.<init>(MpscArrayQueue.java:54)
+	at org.jctools.queues.MpscArrayQueueMidPad.<init>(MpscArrayQueue.java:76)
+	at org.jctools.queues.MpscArrayQueueProducerLimitField.<init>(MpscArrayQueue.java:103)
+	at org.jctools.queues.MpscArrayQueueL2Pad.<init>(MpscArrayQueue.java:125)
+	at org.jctools.queues.MpscArrayQueueConsumerIndexField.<init>(MpscArrayQueue.java:151)
+	at org.jctools.queues.MpscArrayQueueL3Pad.<init>(MpscArrayQueue.java:178)
+	at org.jctools.queues.MpscArrayQueue.<init>(MpscArrayQueue.java:199)
+FATAL ERROR in native method: processing of -javaagent failed
+```
+如此看来，只要解决了这个问题那么其他问题就能够迎刃而解了。
+
+尝试了一下，这个问题产生的根本原因还是因为编译结果的路不对，aop.xml以及kieker.monitoring.properties无法找到，尝试着修改编译结果的路径就可以了。
+aop.xml以及kieker.monitoring.properties必须在class编译结果同级的META-INF文件夹下面，位置不对，文件夹名字不对都会出现错误。
+那么尝试之着在SpringMVC中使用AspectJ的方式来进行监控。这里我就有个小问题了，Spring监控的方式还好说，简单配置后就能使用，但是现在使用AspectJ的方式，既要配置，同时还需要在JVM参数里面指定javaagent，而且貌似这个配置方式是可以简化的，有没有比较方便点的方法呢，再仔细看看文档吧。
+
+spring项目还是无法使用，仍然报无法找到配置文件的错误。不过因为工作催着的原因，所以不深究下去了。暂且使用spring 方式来进行监控。
 ## 参考内容
 1. Kieker官网： http://kieker-monitoring.net/download/
