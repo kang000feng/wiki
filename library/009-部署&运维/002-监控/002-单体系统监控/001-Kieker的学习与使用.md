@@ -169,5 +169,50 @@ aop.xml以及kieker.monitoring.properties必须在class编译结果同级的META
 那么尝试之着在SpringMVC中使用AspectJ的方式来进行监控。这里我就有个小问题了，Spring监控的方式还好说，简单配置后就能使用，但是现在使用AspectJ的方式，既要配置，同时还需要在JVM参数里面指定javaagent，而且貌似这个配置方式是可以简化的，有没有比较方便点的方法呢，再仔细看看文档吧。
 
 spring项目还是无法使用，仍然报无法找到配置文件的错误。不过因为工作催着的原因，所以不深究下去了。暂且使用spring 方式来进行监控。
+
+### Trace Analysis and Visualization
+这一部分讲的是如何利用Kieker提供的工具对监控的数据进行分析和可视化。  
+使用Kieker可视化工具的前提是安装两个可视化工具：  
+
+1. Graphviz：A graph visualization software.
+2. GNU PlotUtils：A set of tools for generating 2D plot graphics.
+3. ps2pdf： The ps2pdf tool is used to convert ps files to pdf files.
+
+下载安装这三个工具,Ubuntu系统可以使用下面命令进行安装，其它发行版或者Windows系统请见参考内容[2][3]:
+```shell
+sudo apt-get update
+sudo apt-get install graphviz
+sudo apt-get install plotutils
+sudo apt-get install ghostscript
+```
+
+之后执行命令：
+```
+chmod 777 ./bin/trace-analysis.sh
+
+ ./bin/trace-analysis.sh -inputdirs /code/micoservice/jeesite/trace-data/kieker-20190326-061219-103288581501467-UTC--KIEKER-SINGLETON -outputdir /code/micoservice/jeesite/trace-visualization/ -plot-Deployment-Sequence-Diagrams -plot-Call-Trees –short-labels
+
+sudo apt-get install texlive-extra-utils  
+
+ chmod 777 ./bin/dotPic-fileConverter.sh
+ ./bin/dotPic-fileConverter.sh /code/micoservice/jeesite/trace-visualization/ pdf png
+
+```
+
+
+## 杂记
+
+Spring容器和MVC容器可以设置各自的context package以及proxy方式，其中父容器spring无法访问子容器spring mvc的内容，子容器可以访问父容器的内容，在context:component-scan标签内添加use-default-filters="false"即可过过滤掉父容器中扫描过内容。
+
+productuin_ssm项目已经可以确认spring容器中使用jdk作为代理，springmvc子容器中使用cglib作为代理，controller中所以private方法改为public方法即可正常监控到所有数据。
+
+jessite项目问题也已经确认，因为dao层mybatis接口动态生成的class是final类型的，所以不能使用cglib动态代理（因为cglib动态代理的原理是继承生成一个子类，所以不能代理fianl class。）但是service层jessite没有使用接口，直接在controller层autowrie实现类，所以使用jdk动态代理会报autowried期望类型与实际不符的错误，也就是说dao层和service层前者必须使用jdk代理，后者必须使用cglib代理，但是两者都在父容器中扫描配置的，只能使用一种代理方式，所以目前可以考虑的解决方法为：  
+1. 为jeesite所有service添加对应接口，然后在controller层autowrie接口而不是实现类，这样spring父容器中就可以使用jdk代理来完成监控。
+2. 将dao层扫描配置或者service层配置放到springmvc子容器中，spring父容器和springmvc子容器可以采取不同的代理方式，这样可以实现监控。  
+方式1需要改动大量代码，改动量虽然大但是改动方式简单明了，结果可以预测。  
+方式2需要大幅改动配置文件，改动量虽然相对较小，但是改动之后难以预料会对系统产生什么影响。
+
 ## 参考内容
 1. Kieker官网： http://kieker-monitoring.net/download/
+2. Graphviz： http://www.graphviz.org/
+3. GNU PlotUtils：http://www.gnu.org/software/plotutils/  http://gnuwin32.sourceforge.net/packages/plotutils.htm
