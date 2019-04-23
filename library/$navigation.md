@@ -7,6 +7,8 @@
 - **Linux常用命令**
     - [rpm相关](?file=001-常用命令备忘/02-Linux常用命令/001-rpm相关 "rpm相关")
     - [系统命令相关](?file=001-常用命令备忘/02-Linux常用命令/002-系统命令相关 "系统命令相关")
+- **Maven常用命令**
+    - [Maven常用命令](?file=001-常用命令备忘/03-Maven常用命令/001-Maven常用命令 "Maven常用命令")
 
 ##### 前端
 - **HTML5**
@@ -31,6 +33,8 @@
         - [Java Annotation](?file=003-编程语言/001-Java/002-Java Annotation/001-Java Annotation "Java Annotation")
     - **JVM**
         - [JVM相关知识](?file=003-编程语言/001-Java/003-JVM/001-JVM相关知识 "JVM相关知识")
+    - **jar包相关**
+        - [反编译jar包](?file=003-编程语言/001-Java/004-jar包相关/001-反编译jar包 "反编译jar包")
 - **C++**
     - [C++零碎知识](?file=003-编程语言/002-C++/001-C++零碎知识 "C++零碎知识")
     - [C++ STL map使用](?file=003-编程语言/002-C++/002-C++ STL map使用 "C++ STL map使用")
