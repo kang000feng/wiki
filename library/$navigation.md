@@ -57,11 +57,12 @@
     - [最长公共子序列](?file=004-简单算法/005-动态规划/002-最长公共子序列 "最长公共子序列")
 
 ##### 数据库
-- **关系型数据库.md**
+- **关系型数据库**
 - **NoSQL**
     - **图数据库**
         - **Neo4j**
-            - [Neo4j简单使用](?file=005-数据库/002-NoSQL/001-图数据库/001-Neo4j/001-Neo4j简单使用 "Neo4j简单使用")
+            - [Neo4j安装](?file=005-数据库/002-NoSQL/001-图数据库/001-Neo4j/001-Neo4j安装 "Neo4j安装")
+            - [Neo4j简单使用](?file=005-数据库/002-NoSQL/001-图数据库/001-Neo4j/002-Neo4j简单使用 "Neo4j简单使用")
 
 ##### 操作系统
 
@@ -101,6 +102,9 @@
     - [使用Github Pages绑定多个二级域名](?file=010-常用工具相关/001-Git相关/001-使用Github Pages绑定多个二级域名 "使用Github Pages绑定多个二级域名")
 - **科学上网**
     - [shadowsocks配置](?file=010-常用工具相关/002-科学上网/001-shadowsocks配置 "shadowsocks配置")
+- **开发工具**
+    - **Intellij IDEA**
+        - [Intellij IDEA 配置远程服务器Docker部署环境](?file=010-常用工具相关/003-开发工具/001-Intellij IDEA/001-Intellij IDEA 配置远程服务器Docker部署环境 "Intellij IDEA 配置远程服务器Docker部署环境")
 
 ##### 网站收藏
 - [常用网站收藏](?file=011-网站收藏/001-常用网站收藏 "常用网站收藏")
