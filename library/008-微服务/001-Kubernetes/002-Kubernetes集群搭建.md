@@ -4,22 +4,56 @@
 从官方文档可以看出，1.14相较于之前的版本有所不同，具体可以在安装之后再感受一下。
 
 ## 准备
-目前我准备了四台服务器，分别作为master，node1，node2和node3.  
-都已经预先安装好了Docker，版本分别是：18.06,18.06,17.03,17.03  
-Docker版本可能会对后面的安装有所影响，但是这里暂且不修改，看看后面安装是否会出错。
+目前我准备了两台服务器，分别作为master，node1.
+都已经预先安装好了Docker.
+## 系统配置
+### 设置主机名称
+```
+vi /etc/hosts
+```
+修改为
+```
+10.141.212.138 master
+10.141.211.176 node1
+```
+### 禁用防火墙
 
+```
+systemctl stop firewalld
+systemctl disable firewalld
+```
+
+### 禁用SETLINUX
+
+```
+setenforce 0
+
+vi /etc/selinux/config
+SELINUX=disabled
+```
+
+```
+vi /etc/sysctl.d/k8s.conf
+
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+
+modprobe br_netfilter
+sysctl -p /etc/sysctl.d/k8s.conf
+```
 ## 安装kubeadm，kubalet，kubectl
-首先按照参考内容[1]进行相关的准备和安装工作，下面是我执行的用于Contos的安装命令。
+首先按照参考内容[1]进行相关的准备和安装工作，下面是我执行的用于Contos的安装命令。  
+官方地址下载会因为墙拉不到镜像，所以我们使用国内阿里云的源
 ```
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
 enabled=1
 gpgcheck=1
 repo_gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-exclude=kube*
+gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOF
 
 # Set SELinux in permissive mode (effectively disabling it)
@@ -29,9 +63,11 @@ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 systemctl enable --now kubelet
+
 ```  
 
-执行安装kubeadm，kubectl，kubelet命令之后，会发现因为被墙所以找不到镜像，但是它会自动寻找其它镜像，耐心等待之后会完成安装，但是安装出来的版本可能很是1.13或者更旧。这个时候重新执行一下上面的安装命令就会更新到1.14，天知道为什么（= =）。  
+执行之后即可安装最新版本的kubelet，kubectl和kubeadm
+
 之后按照说明执行：
 ```
 cat <<EOF >  /etc/sysctl.d/k8s.conf
@@ -40,12 +76,86 @@ net.bridge.bridge-nf-call-iptables = 1
 EOF
 sysctl --system
 ```
-cgroup什么的先不配吧，搞不懂是什么。。
+为了保证服务器节点在资源紧张情况下更加稳定，修改各个节点docker的cgroup driver为systemd
+
+```
+vi /etc/docker/daemon.json
+
+{
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}
+
+systemctl restart docker
+
+docker info | grep Cgroup
+```
+
+关闭swap
+```
+swapoff -a
+```
 ## 初始化节点并且加入集群
 执行下面命令：
 ```
+# 各节点开机启动kubelet
+systemctl enable kubelet.service
 export KUBECONFIG=/etc/kubernetes/admin.conf
 ```
 
+新建一个文件，存放配置
+
+```
+vi kubeadm.yaml
+
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 10.141.212.138
+  bindPort: 6443
+nodeRegistration:
+  taints:
+  - effect: PreferNoSchedule
+    key: node-role.kubernetes.io/master
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+kubernetesVersion: v1.15.0
+networking:
+  podSubnet: 10.244.0.0/16
+
+kubeadm init --config kubeadm.yaml --ignore-preflight-errors=Swap
+```
+解决了一堆报错之后终于成功运行：
+```
+kubeadm join 10.141.212.138:6443 --token qqp314.8t4e7jgqzy425hu4 \
+    --discovery-token-ca-cert-hash sha256:9d4800e904e780810fe276d10785df132a9031ea1e3e995914ba3ea3f4018dcc
+```
+
+配置用户查看集群：
+```
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+查看集群状态是否正常：
+```
+kubectl get cs
+```
+
+## 安装Pod Network
+```
+mkdir -p ~/k8s/
+cd ~/k8s
+curl -O https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f  kube-flannel.yml
+```
+
+## 子结点加入集群
+```
+kubeadm join 10.141.212.138:6443 --token qqp314.8t4e7jgqzy425hu4 \
+    --discovery-token-ca-cert-hash sha256:9d4800e904e780810fe276d10785df132a9031ea1e3e995914ba3ea3f4018dcc
+```
+
+至此成功。
 ## 参考内容
 1. K8s官网安装教程：https://kubernetes.io/docs/setup/independent/install-kubeadm/
