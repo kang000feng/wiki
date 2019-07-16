@@ -86,7 +86,7 @@
     - [Kubernetes集群搭建](?file=008-微服务/001-Kubernetes/002-Kubernetes集群搭建 "Kubernetes集群搭建")
     - [Kubernetes相关问题记录](?file=008-微服务/001-Kubernetes/003-Kubernetes相关问题记录 "Kubernetes相关问题记录")
     - **Kubernetes相关知识**
-        - [PV,PVC](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/001-PV,PVC "PV,PVC")
+        - [PV PVC](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/001-PV PVC "PV PVC")
 - **Spring Cloud**
 - **ServiceComb**
     - [ServiceComb初体验](?file=008-微服务/003-ServiceComb/001-ServiceComb初体验 "ServiceComb初体验")
