@@ -169,3 +169,22 @@ emmm，事实证明和这个一点关系都没有2333，delete是我自己写的
 ## 2019.07.12
 前两天花时间吧Kubernetes集群成功搭建了起来，也留下了必要的文档，之后可以简单整理一下，做成一个记录性质的博客。  
 所以今天想要做的事情不是业务这一块儿，而是准备把WithMe部署至Kubernetes，目前我是使用Docker Compose进行部署的。在查找资料的过程中，我发现了官方的一个工具：Kompose，目的是帮助项目从docker compose迁移至kubernetes，具体安装方法很简单，直接在Github上搜索按照教程来即可。接下来开始尝试转换以及部署。
+
+## 2019.07.12
+过去几天花了不少时间，终于成功地把WithMe部署到了Kubernetes集群上并且成功运行了起来。  
+首先，我使用Kompose把docker-compose文件转化为了一系列kubernetes部署文件，其实主要有以下几类：
+1. PersistentVolumeClaim： 这类文件是对硬件资源的申请，在WithMe项目中主要是因为数据库的数据需要持久化，所以需要有pvc来申请存储资源。
+2. Deployment： 这类部署文件是各个服务的核心部署文件，它定义了每个服务的必要参数、挂载卷、镜像地址等。
+3. Service： 这类部署文件确定了各个服务的名称，暴露端口等。注意此处的NodePort、Port和TargetPort的区别。  
+此处我首先遇到的问题是无法拉取镜像：DockerCompose可以现在本地build并拉取镜像，但是Kubernetes默认策略是从远程拉取镜像，因为我们事先无法预知某个服务会被部署到哪个节点，所以要么在所有节点都build好image，修改镜像拉取策略在本地。要么搭建docker镜像仓库或者上传至dockerhub。  
+我采用的方式是上传服务至DockerHub仓库，首先需要在DockerHub注册账号，然后修改DockerCompose镜像名称前缀为自己的用户，在本地使用docker login登录DockerHub账号，之后使用docker-compose build 以及 docker-compose push就好了，如果报错请检查build的镜像名称前缀是否是自己的用户名。
+
+镜像问题解决后，又遇到了新的问题：PVC是对存储资源的申请，但是我的集群并没有提供硬件资源。所以说pvc无法成功创建，那么mysql也会受影响无法正常部署。也就是说需要创建对应的PV，接下来我查阅了相关资料，学习了PV的创建方法，具体可以看PV&PVC，此处不再多说，我是用了Nfs来提供硬件资源，配置了nfs服务之后，创建对应的pv，pvc和mysql即可正常运行。
+
+pv问题解决之后，还有一些小问题，比如后端服务端口无法访问，这是因为compose转化时的问题：在docker-compose文件中port有两种，一种是容器内端口，一种是映射至主机的端口，但是在Kubernetes集群中，端口一共有三种，一种是target port，这种是容器内端口，一种是port，这是暴露给集群内部其它服务的端口，还有一种是node port，这种是集群外部访问服务的端口。kompose的转换有些问题，把映射到主机的端口转化到了暴露给其它服务的端口，这导致服务之间无法访问，因此应该修改每个service的port参数，让其与代码中访问的端口保持一致。
+
+此外还有一个问题，之前ws请求我没有使用nginx进行代理，直接访问主机暴露的端口的，但是这在kubernetes集群中显然不太合适，所以简单修改了nginx的conf文件，使nginx也代理ws的请求，这样整个集群就之暴露ui-service的一个端口其它都是集群内部通信。
+
+到目前为止，WithMe3.0已经能够成功地部署在Kuernetes集群中，当然，与DockerCompose相比，部署过程无疑复杂了很多，但是起码做到了开发和部署分离，在不修改代码的前提下可以使用Docker Compose部署，也可以使用Kubernetes部署，接下来进一步实现CI和Devops也更加方便。  
+
+之后我会写几篇博客，依次讲解Kuebrnetes集群的搭建，nfs服务器设置，pv&pvc，Deployment、Service，虽说有无数博客和书籍将这些东西已经讲得很好了，我还是想把自己摸索的记录和认识记录下来。之后会做的，到时再把链接更新在Readme吧。目前WithMe3.0部署暂时不会再继续向后探索，接下来需要继续进行业务上的开发。不过目前还是先做实验室这边的事情吧。
