@@ -13,6 +13,8 @@
     - [Docker常用命令](?file=001-常用命令备忘/04-Docker常用命令/001-Docker常用命令 "Docker常用命令")
 - **Kubernetes常用命令**
     - [Kubernetes常用命令](?file=001-常用命令备忘/05-Kubernetes常用命令/001-Kubernetes常用命令 "Kubernetes常用命令")
+- **其它常用命令**
+    - [hexo常用命令](?file=001-常用命令备忘/06-其它常用命令/01-hexo常用命令 "hexo常用命令")
 
 ##### 前端
 - **HTML5**
@@ -23,6 +25,7 @@
     - [XSS注入](?file=002-前端/002-安全/001-XSS注入 "XSS注入")
 - **Nginx**
     - [Nginx with Docker-Compose](?file=002-前端/003-Nginx/001-Nginx with Docker-Compose "Nginx with Docker-Compose")
+- **JavaScript**
 
 ##### 编程语言
 - **Java**
@@ -68,6 +71,9 @@
         - **Neo4j**
             - [Neo4j安装](?file=005-数据库/002-NoSQL/001-图数据库/001-Neo4j/001-Neo4j安装 "Neo4j安装")
             - [Neo4j简单使用](?file=005-数据库/002-NoSQL/001-图数据库/001-Neo4j/002-Neo4j简单使用 "Neo4j简单使用")
+- **ORM框架**
+    - **Hibernate**
+        - [Hibernate零碎知识点](?file=005-数据库/003-ORM框架/001-Hibernate/001-Hibernate零碎知识点 "Hibernate零碎知识点")
 
 ##### 操作系统
 
@@ -75,10 +81,13 @@
 - **Spring**
     - [Spring 自定义注解](?file=007-JavaWeb/001-Spring/001-Spring 自定义注解 "Spring 自定义注解")
     - [在Spring启动时执行方法](?file=007-JavaWeb/001-Spring/002-在Spring启动时执行方法 "在Spring启动时执行方法")
-    - **Spring AOP.md**
-        - [Spring AOP运行](?file=007-JavaWeb/001-Spring/003-Spring AOP.md/001-Spring AOP运行 "Spring AOP运行")
+    - **Spring AOP**
+        - [Spring AOP运行](?file=007-JavaWeb/001-Spring/003-Spring AOP/001-Spring AOP运行 "Spring AOP运行")
+        - [Spring AOP踩坑记录](?file=007-JavaWeb/001-Spring/003-Spring AOP/002-Spring AOP踩坑记录 "Spring AOP踩坑记录")
 - **安全**
 - **项目**
+- **其它**
+    - [开发知识点](?file=007-JavaWeb/004-其它/001-开发知识点 "开发知识点")
 
 ##### 微服务
 - **Kubernetes**
@@ -92,6 +101,7 @@
     - [ServiceComb初体验](?file=008-微服务/003-ServiceComb/001-ServiceComb初体验 "ServiceComb初体验")
 - **微服务资料**
     - [微服务相关资料](?file=008-微服务/004-微服务资料/001-微服务相关资料 "微服务相关资料")
+    - [限界上下文视角下的微服务粒度评估](?file=008-微服务/004-微服务资料/002-限界上下文视角下的微服务粒度评估 "限界上下文视角下的微服务粒度评估")
 
 ##### 部署&运维
 - **持续集成**
@@ -112,6 +122,8 @@
 - **开发工具**
     - **Intellij IDEA**
         - [Intellij IDEA 配置远程服务器Docker部署环境](?file=010-常用工具相关/003-开发工具/001-Intellij IDEA/001-Intellij IDEA 配置远程服务器Docker部署环境 "Intellij IDEA 配置远程服务器Docker部署环境")
+- **日常知识**
+    - [申请https证书](?file=010-常用工具相关/004-日常知识/001-申请https证书 "申请https证书")
 
 ##### 项目
 - **WithMe**

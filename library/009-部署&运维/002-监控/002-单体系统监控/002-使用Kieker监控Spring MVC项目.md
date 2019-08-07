@@ -87,6 +87,8 @@ xsi:schemaLocation="
 
 ### 设置JVM参数
 
+
+
 最后在配置中添加JVM参数
 ```
 -Dkieker.monitoring.writer.filesystem.AsciiFileWriter.customStoragePath=yourpath
@@ -100,6 +102,7 @@ xsi:schemaLocation="
 2. controller有convert，jdk代理会导致convert类型与期望类型不一致导致出错，解决方法为使用cglib代理。
 3. 使用mybatis动态生成dao层，生成的class为final类型，cglib无法代理final类型的class导致出错，类型为cglib无法继承final class，此时可使用jdk代理解决。
 4. 在controller层中直接autowrie service实现类而不是借口，使用jdk代理时会出错，jdk代理基于接口实现，与autowrie期望类型不一致导致autowried失败，此时可使用cglib代理解决或者修改service层抽出来接口。
+5. 监控SpringBoot项目注意KikerConfig文件是否被成功扫描，如果没有配置自动扫描需要手动import。
 
 
 ## 使用AspectJ方式进行监控
