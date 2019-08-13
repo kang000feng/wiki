@@ -56,8 +56,9 @@ node "master" not found
 ```
 找了一阵资料发现是kubeadm的ip地址忘记改成自己的了，修改之后再次运行就没错了。
 
+### 运行报错
 
-#### 报错
+#### 重启失败
 过了两天，执行kubectl get pods命令发现失效，过了很长时间报错：
 ```
 Error from server (Timeout): the server was unable to return a response in the time allotted, but may still be processing the request (get pods)
@@ -68,6 +69,34 @@ k8s_POD开头的几个镜像仍在正在运行，重启的镜像是不包含POD�
 #### 解决方法
 找了一阵子资料发现没什么好办法，直接重新安装。
 
+#### Master报错
+使用kubectl命令发现报错：
+```
+The connection to the server 10.141.212.21:6443 was refused - did you specify the right host or port?
+```
+然后使用docker ps -a 看了一下，所有服务都启动失败了，查找资料后发现是因为swap没有永久禁用。
+
+#### 解决方法
+永久禁用swap：
+```shell
+cp -p /etc/fstab /etc/fstab.bak$(date '+%Y%m%d%H%M%S')
+
+sed -i "s/\/dev\/mapper\/centos-swap/\#\/dev\/mapper\/centos-swap/g" /etc/fstab
+
+mount -a
+
+free -m
+cat /proc/swaps
+```
+之后服务会自动重启。
+
+#### hosts文件自动恢复
+又发现了一个神奇的问题，hosts文件每过一会儿就自动回复原样，气死我了。  
+没找到相关资料。
+
+#### 解决方法
+莫名重启几次就。。还是那样，但是，集群正常了？？  
+天知道为什么，不深究了。
 ## 参考资料
 1. Kubadm PKI certificates and requirements：https://kubernetes.io/docs/setup/best-practices/certificates/
 2. 安装Kubeadm：https://kubernetes.io/zh/docs/setup/independent/install-kubeadm/
