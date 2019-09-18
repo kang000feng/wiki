@@ -109,6 +109,7 @@
 ##### 部署&运维
 - **持续集成**
     - [Jenkins CI with Docker Compose](?file=009-部署&运维/001-持续集成/001-Jenkins CI with Docker Compose "Jenkins CI with Docker Compose")
+    - [DevOps初探](?file=009-部署&运维/001-持续集成/002-DevOps初探 "DevOps初探")
 - **监控**
     - **分布式系统监控**
     - **单体系统监控**
