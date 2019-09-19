@@ -7,6 +7,7 @@
 - **Linux常用命令**
     - [rpm相关](?file=001-常用命令备忘/02-Linux常用命令/001-rpm相关 "rpm相关")
     - [系统命令相关](?file=001-常用命令备忘/02-Linux常用命令/002-系统命令相关 "系统命令相关")
+    - [snap相关](?file=001-常用命令备忘/02-Linux常用命令/003-snap相关 "snap相关")
 - **Maven常用命令**
     - [Maven常用命令](?file=001-常用命令备忘/03-Maven常用命令/001-Maven常用命令 "Maven常用命令")
 - **Docker常用命令**
@@ -121,6 +122,7 @@
 ##### 常用工具相关
 - **Git相关**
     - [使用Github Pages绑定多个二级域名](?file=010-常用工具相关/001-Git相关/001-使用Github Pages绑定多个二级域名 "使用Github Pages绑定多个二级域名")
+    - [Git开发规范](?file=010-常用工具相关/001-Git相关/002-Git开发规范 "Git开发规范")
 - **科学上网**
     - [shadowsocks配置](?file=010-常用工具相关/002-科学上网/001-shadowsocks配置 "shadowsocks配置")
 - **开发工具**
