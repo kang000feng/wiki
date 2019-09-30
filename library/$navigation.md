@@ -8,6 +8,7 @@
     - [rpm相关](?file=001-常用命令备忘/02-Linux常用命令/001-rpm相关 "rpm相关")
     - [系统命令相关](?file=001-常用命令备忘/02-Linux常用命令/002-系统命令相关 "系统命令相关")
     - [snap相关](?file=001-常用命令备忘/02-Linux常用命令/003-snap相关 "snap相关")
+    - [yum相关](?file=001-常用命令备忘/02-Linux常用命令/004-yum相关 "yum相关")
 - **Maven常用命令**
     - [Maven常用命令](?file=001-常用命令备忘/03-Maven常用命令/001-Maven常用命令 "Maven常用命令")
 - **Docker常用命令**
@@ -98,6 +99,7 @@
     - [Kubernetes相关问题记录](?file=008-微服务/001-Kubernetes/003-Kubernetes相关问题记录 "Kubernetes相关问题记录")
     - **Kubernetes相关知识**
         - [PV PVC](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/001-PV PVC "PV PVC")
+        - [Kubernetes集群增加节点](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/002-Kubernetes集群增加节点 "Kubernetes集群增加节点")
 - **Spring Cloud**
 - **ServiceComb**
     - [ServiceComb初体验](?file=008-微服务/003-ServiceComb/001-ServiceComb初体验 "ServiceComb初体验")
@@ -130,6 +132,7 @@
         - [Intellij IDEA 配置远程服务器Docker部署环境](?file=010-常用工具相关/003-开发工具/001-Intellij IDEA/001-Intellij IDEA 配置远程服务器Docker部署环境 "Intellij IDEA 配置远程服务器Docker部署环境")
 - **日常知识**
     - [申请https证书](?file=010-常用工具相关/004-日常知识/001-申请https证书 "申请https证书")
+    - [阿里云服务器购买方案](?file=010-常用工具相关/004-日常知识/002-阿里云服务器购买方案 "阿里云服务器购买方案")
 
 ##### 项目
 - **WithMe**

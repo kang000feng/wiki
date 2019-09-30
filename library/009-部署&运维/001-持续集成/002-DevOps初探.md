@@ -38,6 +38,32 @@
 
 在真正企业实践中，肯定会选择第三种方案，因为不同服务往往由团队负责，天然就是适合分库管理的。但是trainticket作为开源项目，代码需要集中管理，而且第三种方案的优势相对来说不是很大，我们可以通过开发规范来限制这种情况的出现。所以，考虑到开源项目的限制，我们选择使用第二种构建模式。
 
+
+
+## 流程调研
+
+现在DevOps有很多实现方式，常见的工具链如下图所示：
+
+![DevOps工具链](http://www.jamesbowman.me/post/cdlandscape/ContinuousDeliveryToolLandscape-fullsize.jpeg)
+
+其中我所知的比较常用的工具链是：
+
+代码仓库：Github/GitLab
+
+依赖管理：Maven/Gradle/Npm
+
+容器、镜像管理：Docker/DockerHub
+
+CI服务器：Jenkins/Travis
+
+部署/运行：k8s
+
+在查找了一些资料之后，我们发现了基于Jenkins的Jenkins X项目，它是一个基于Jenkins和k8s的CI/CD平台，主要解决微服务架构下云原生应用的持续集成和继续交付的问题，它使用Jenkin、Helm、Draft、GitOps以及Github等工具链够早了一个从集群安装、环境管理、持续集成、持续部署一直到应用发布等支持整个流程的平台。[3]
+
+从它的介绍中可以看出，它和我们所熟知的工具链的不同之处在于，它是完全基于k8s实现的，并且把集群管理也整合到了流程之中，并且能够与Git相整合，也引出了几种全新的工具用以实现整个流程。
+
+因为我们的工作主要是探索性的实践，本身没有太多创造性，为了让这次探索更加有意义，我们更应该尝试一些比较新的实践，总结出来才会更加有意义。而且，我们本身也是基于k8s的微服务应用，这套工具也非常契合我们的需求。
+
 ## 相关工具
 
 Draft：https://draft.sh/
@@ -78,10 +104,21 @@ cat /etc/kubernetes/manifests/kube-apiserver.yaml
 # 先停止docker服务
 service docker stop
 # 执行如下命令
-dockerd --insecure-registry=10.0.0.0/16
+vi /lib/systemd/system/docker.service
 ```
 
-（此处执行失败，有何影响暂时未知，继续向下执行）
+找到ExecStart这一行，在末尾添加 ：--insecure-registry=10.0.0.0/16
+
+```shell
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock --insecure-registry=10.0.0.0/16
+```
+
+之后重启Docker服务：
+
+```
+systemctl daemon-reload
+service docker restart
+```
 
 ### 安装Helm[6]
 
@@ -237,7 +274,71 @@ kubectl get all -n kube-system -l app=helm -o name|xargs kubectl delete -n kube-
 helm init --service-account tiller --skip-refresh
 ```
 
+### 安装Draft
+
+按照官网文档[10]来安装Draft：
+
+```shell
+# 这个速度依然很慢，但是因为文件不大，倒是可以等会儿
+wget https://azuredraft.blob.core.windows.net/draft/draft-v0.16.0-linux-amd64.tar.gz
+# 解压
+tar -xzvf draft-v0.16.0-linux-amd64.tar.gz
+# 命令行工具移至系统路径
+sudo mv linux-amd64/draft /usr/local/bin/draft
+```
+
+如果未安装git，需先安装git
+
+```shell
+sudo yum install git -y
+```
+
+然后配置draft
+
+```shell
+draft init
+```
+
 ### 安装jenkins X
+
+```shell
+jx install --provider=kubernetes
+```
+
+这个需要等待一段时间。
+
+
+
+注意：
+
+如果安装过程中出现：
+
+```shell
+ingress init failed: service jxing-nginx-ingress-controller never became ready
+```
+
+则需要按照下面说明自行安装Ingress Controller。
+
+如果没有出现错误，则可以跳过下面安装Ingress的过程，因为在jx安装过程中会自动安装Ingress。
+
+### 安装Ingress Controller
+
+jx本身也是使用Helm安装的Ingress，因此按照[11]中方式来排查错误。
+
+最终发现问题是没有指定ingress-controller的EXTERNAL-IP
+
+```shell
+# 先查看上一步的残留
+helm list
+# 删除之前的安装不成功的chart
+helm delete --purge jxing
+# 执行安装，此处选用externalIP方式，IP可以更改为想要使用的IP
+helm install stable/nginx-ingress --name jxing --set "rbac.create=true,controller.service.externalIPs[0]=10.141.212.21" --namespace kube-system
+```
+
+这里我注意到jenkins X之所以自动安装失败是因为jxing-nginx-ingress-controller这个service一直处于pending状态，根据[12]中高票答案的说法，因为我们没有指定域名或者NodePort，所以参考[11]中的做法以及[12]官方文档的介绍，使用如上命令，自己指定externalIP，建立nginx-ingress。
+
+成功之后，重新执行：
 
 ```shell
 jx install --provider=kubernetes
@@ -256,3 +357,9 @@ jx install --provider=kubernetes
 7. Helm安装说明：https://helm.sh/docs/using_helm/#installing-helm
 8. kubernetes1.13.1集群安装包管理工具helm：https://blog.51cto.com/jerrymin/2346902
 9. Helm包管理工具介绍：https://www.cnblogs.com/xzkzzz/p/10445807.html
+10. Draft quickstart guide：https://github.com/Azure/draft/blob/master/docs/quickstart.md
+11. 利用Helm部署Ingress：https://blog.csdn.net/bbwangj/article/details/82863042
+12. StackOverFlow Q:kubernetes service external ip pending ：https://stackoverflow.com/questions/44110876/kubernetes-service-external-ip-pending
+13. Helm Hub nginx-ingress: https://hub.helm.sh/charts/stable/nginx-ingress
+
+flux-GitOps：https://github.com/fluxcd/flux

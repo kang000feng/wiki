@@ -94,9 +94,111 @@ cat /proc/swaps
 又发现了一个神奇的问题，hosts文件每过一会儿就自动回复原样，气死我了。  
 没找到相关资料。
 
+这个问题应该是挖矿病毒。。。垃圾挖矿病毒！！！
+
+
+
+### kubeadm init拉取镜像失败
+
+设置拉取dockerhub镜像：
+
+```shell
+kubeadm config print init-defaults ClusterConfiguration >kubeadm.conf
+```
+
+修改其中的
+
+```
+imageRepository: imdingtalk
+```
+
+这是dockerhub一个同步gcr.io镜像的仓库，截至1.16版本都有效。
+
+或者直接拉取镜像然后改标签：
+
+```
+sudo docker pull imdingtalk/kube-controller-manager:v1.16.0
+sudo docker pull imdingtalk/kube-apiserver:v1.16.0
+sudo docker pull imdingtalk/kube-proxy:v1.16.0
+sudo docker pull imdingtalk/kube-scheduler:v1.16.0
+sudo docker pull imdingtalk/etcd:3.3.15-0
+sudo docker pull imdingtalk/pause:3.1
+sudo docker pull imdingtalk/coredns:1.6.2
+
+sudo docker pull imdingtalk/kube-controller-manager:v1.15.3
+sudo docker pull imdingtalk/kube-apiserver:v1.15.3
+sudo docker pull imdingtalk/kube-proxy:v1.15.3
+sudo docker pull imdingtalk/kube-scheduler:v1.15.3
+sudo docker pull imdingtalk/etcd:3.3.10
+sudo docker pull imdingtalk/pause:3.1
+sudo docker pull imdingtalk/coredns:1.3.1
+```
+
+
+
+成功拉取镜像后还是改回gcr.io的标签吧。
+
+```shell
+sudo docker tag imdingtalk/kube-controller-manager:v1.16.0 k8s.gcr.io/kube-controller-manager:v1.16.0
+sudo docker tag imdingtalk/kube-apiserver:v1.16.0 k8s.gcr.io/kube-apiserver:v1.16.0
+sudo docker tag imdingtalk/kube-proxy:v1.16.0 k8s.gcr.io/kube-proxy:v1.16.0
+sudo docker tag imdingtalk/kube-scheduler:v1.16.0 k8s.gcr.io/kube-scheduler:v1.16.0
+sudo docker tag imdingtalk/etcd:3.3.15-0 k8s.gcr.io/etcd:3.3.15-0
+sudo docker tag imdingtalk/pause:3.1 k8s.gcr.io/pause:3.1
+sudo docker tag imdingtalk/coredns:1.6.2 k8s.gcr.io/coredns:1.6.2
+
+sudo docker tag imdingtalk/kube-controller-manager:v1.15.3 k8s.gcr.io/kube-controller-manager:v1.15.3
+sudo docker tag imdingtalk/kube-apiserver:v1.15.3 k8s.gcr.io/kube-apiserver:v1.15.3
+sudo docker tag imdingtalk/kube-proxy:v1.15.3 k8s.gcr.io/kube-proxy:v1.15.3
+sudo docker tag imdingtalk/kube-scheduler:v1.15.3 k8s.gcr.io/kube-scheduler:v1.15.3
+sudo docker tag imdingtalk/etcd:3.3.10 k8s.gcr.io/etcd:3.3.10
+sudo docker tag imdingtalk/pause:3.1 k8s.gcr.io/pause:3.1
+sudo docker tag imdingtalk/coredns:1.3.1 k8s.gcr.io/coredns:1.3.1
+```
+
+
+
 #### 解决方法
 莫名重启几次就。。还是那样，但是，集群正常了？？  
 天知道为什么，不深究了。
+
+
+
+### kubernetes 1.16 cni-flannel安装失败
+
+困扰我一个晚上，更换机器反复验证后确认，此为1.16版本bug
+
+见：https://github.com/kubernetes/kubernetes/issues/82997
+
+明天回退。
+
+
+
+## kubeadm init时报错
+
+报错内容：
+
+```
+[kubelet-check] The HTTP call equal to 'curl -sSL http://localhost:10248/healthz' failed with error: Get http://localhost:10248/healthz: dial tcp: lookup localhost on 202.120.224.6:53: no such host.
+```
+
+原因是host文件被修改之后不能解析localhost。。。。明明之前改了host不会有这个问题的，真让人生气。
+
+在/etc/hosts文件中加上localhost之后就好了。。
+
+
+
+## Kubelet启动失败
+
+试着同步一下时间，搞了很久最后同步时间之后问题解决了。
+
+```shell
+yum install ntpdate -y
+ntpdate 0.asia.pool.ntp.org
+```
+
+
+
 ## 参考资料
 1. Kubadm PKI certificates and requirements：https://kubernetes.io/docs/setup/best-practices/certificates/
 2. 安装Kubeadm：https://kubernetes.io/zh/docs/setup/independent/install-kubeadm/

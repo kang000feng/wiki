@@ -64,9 +64,15 @@ yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 systemctl enable --now kubelet
 
-```  
+```
 
-执行之后即可安装最新版本的kubelet，kubectl和kubeadm
+执行之后即可安装最新版本的kubelet，kubectl和kubeadm,但是如果最新版本有问题，如1.16.0版本就会在centos上出现cni启动失败的错误，那么可以指定想要安装kubeadm等工具的版本。如：指定安装1.15.3版本的工具。
+
+```shell
+yum install -y kubelet-1.15.3 kubeadm-1.15.3 kubectl-1.15.3  --disableexcludes=kubernetes
+```
+
+
 
 之后按照说明执行：
 ```
@@ -154,8 +160,22 @@ kubectl apply -f  kube-flannel.yml
 ```
 kubeadm join 10.141.212.138:6443 --token qqp314.8t4e7jgqzy425hu4 \
     --discovery-token-ca-cert-hash sha256:9d4800e904e780810fe276d10785df132a9031ea1e3e995914ba3ea3f4018dcc
+    
+# 10.141.211.176 master
+
+kubeadm join 10.141.211.176:6443 --token o6kx0h.dap3mno2y80ahf5d \
+    --discovery-token-ca-cert-hash sha256:1979057fdfc041ac7cdeab525b158c76b4f0d37a47cb23095fdb4fffd832e00b
 ```
 
 至此成功。
+
+
+
+
+
+## 尝试高可用离线安装
+
+
+
 ## 参考内容
 1. K8s官网安装教程：https://kubernetes.io/docs/setup/independent/install-kubeadm/
