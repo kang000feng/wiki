@@ -9,13 +9,11 @@ ip link delete cni0
 ifconfig flannel.1 down
 ip link delete flannel.1
 rm -rf /var/lib/cni/
-
-
 ```
 
 
 ## kubectl
-```
+```shell
 # 查看集群状态
 kubectl get pod -n kube-system
 
@@ -46,6 +44,9 @@ kubectl delete deployments --all
 # 删除所有PersistentVolumeClaim
 kubectl delete pvc --all
 
+# 有条件的批量删除
+kubectl get pods | grep [过滤条件] | awk '{print $1}' | xargs kubectl delete pod
+
 ```
 
 
@@ -56,5 +57,14 @@ helm repo add stable https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
 
 ```
 
+## 获取join语句
+
+```shell
+kubeadm token create --print-join-command
+```
+
+
+
 ## 参考资料
+
 1. Kubernetes中文文档：http://docs.kubernetes.org.cn/490.html

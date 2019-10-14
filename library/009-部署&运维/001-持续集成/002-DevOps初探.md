@@ -120,7 +120,7 @@ systemctl daemon-reload
 service docker restart
 ```
 
-### 安装Helm[6]
+### 安装Helm2.x[6]
 
 如果k8s集群未安装Helm，则需按照[7]中的说明安装Helm，Helm分为客户端命令行工具以及服务端Tiller组成，此处我选择安装helm的2.14.3版本：
 
@@ -163,12 +163,40 @@ subjects:
 kubectl create -f helm-rbac.yaml
 ```
 
+使用helm2.0也可以选择不安装tiller，执行
+
+```shell
+helm init --client-only
+```
+
+然后直接执行后面命令。
+
+#### 安装tiller（可选）
+
 使用helm部署tiller：
 
 ```shell
 # 注意，这里制定了镜像仓库，如果不指定默认从gcr.io拉去镜像，可能遇到下面错误。
 helm init --service-account tiller   --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.11.0 --stable-repo-url https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
 ```
+
+#### 注意
+
+> kubernetes1.16 版本在安装helm 2.14.0或之前版本时，将一直报错：
+>
+> Error: error installing: the server could not find the requested resource
+>
+> 具体原因可见Github helm仓库的issue：
+>
+> https://github.com/helm/helm/issues/6374
+>
+> 该issue中提供了临时的解决方法，在helm 2.15.0版本发布之前，可以先按照此issue中方法来解决。
+>
+> 执行以下命令来进行初始化：
+>
+> ```shell
+> helm init --service-account tiller --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.14.3 --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | sed 's@  replicas: 1@  replicas: 1\n  selector: {"matchLabels": {"app": "helm", "name": "tiller"}}@' | kubectl apply -f -
+> ```
 
 查看一下tiller是否成功运行：
 
@@ -182,7 +210,15 @@ kubectl get pods -n kube-system
 tiller-deploy-75f5747884-qvhqf   1/1     Running   0          19s
 ```
 
+如果helm仓库无法拉取镜像，可以采用如下命令来更新仓库地址：
 
+```shell
+helm init --client-only --stable-repo-url https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts/
+helm repo add incubator https://aliacs-app-catalog.oss-cn-hangzhou.aliyuncs.com/charts-incubator/
+helm repo update
+```
+
+#### 可能存在的问题
 
 如果执行init命令时不指定镜像地址，或者想要使用的版本镜像仓库不存在，可能会出现如下情况：
 
@@ -274,6 +310,28 @@ kubectl get all -n kube-system -l app=helm -o name|xargs kubectl delete -n kube-
 helm init --service-account tiller --skip-refresh
 ```
 
+### 安装Helm3.x
+
+helm 2.x在k8s1.16版本上会有一些问题，因此这里准备尝试安装helm3.0。
+
+同样先下载helm安装包：
+
+```shell
+# 如果安装了旧版本的helm,执行下面命令来删除tiller和helm工具
+helm reset -f
+rm -rf /usr/local/bin/helm
+
+# 可以下载，但速度较慢，建议耐心等待
+wget https://get.helm.sh/helm-v3.0.0-beta.3-linux-amd64.tar.gz
+tar -zxvf helm-v3.0.0-beta.3-linux-amd64.tar.gz
+mv ./linux-amd64/helm /usr/local/bin/
+
+# 查看helm版本
+helm version
+```
+
+
+
 ### 安装Draft
 
 按照官网文档[10]来安装Draft：
@@ -302,14 +360,102 @@ draft init
 ### 安装jenkins X
 
 ```shell
-jx install --provider=kubernetes
+# 如果安装的helm2
+jx install --provider=kubernetes --domain icedsoulk8s.cn --on-premise
+# 如果安装的helm3
+jx install --provider=kubernetes --helm3 --domain icedsoulk8s.cn --on-premise
 ```
 
 这个需要等待一段时间。
 
+在这个过程中，可以设置DNS域名，设置Github账号，添加Github token。
+
+在遇到选择
+
+```shell
+> Serverless Jenkins X Pipelines with Tekon
+  Static Jenkins Server and Jenkinsfiles
+```
+
+关于它们的不同可以见[14]：
+
+从中可以了解到Serverless Jenkins X Pipelines是Jenkins X的主推方式，以后也有研究的必要。
+
+但是目前，我们的主要目的还是先把完整的CI/CD流程快速搭建起来，后续再考虑做这些更加激进的探索，所以目前暂时采用Static Jenkins Server的方式，写出来的Jenkinfile也更容易推广和识别。
+
+
+
+后续可能会报错：
+
+```
+no matches for kind "Deployment" in version "extensions/v1beta1"
+```
+
+这是kubernetes1.16的锅，Deployment已经从extensions/v1beta1中移除，加入到了正式库apps/v1，按照[15]即可临时解决。
+
+
+
+中间可能会出现镜像拉不下来的问题，全部手动拉一下：
+
+三个node上执行：
+
+```
+docker pull googlecontainer/exposecontroller:2.3.111
+docker pull xinglongjian/builder-jx:2.0.851-206
+docker pull googlecontainer/heapster:v1.5.2
+docker pull googlecontainer/addon-resizer:1.7
+docker pull xinglongjian/jenkinsx:0.0.80
+docker pull xinglongjian/nexus:0.1.7
+docker pull xinglongjian/jx:2.0.645
+
+docker tag googlecontainer/exposecontroller:2.3.111 gcr.io/jenkinsxio/exposecontroller:2.3.111
+docker tag xinglongjian/builder-jx:2.0.851-206 gcr.io/jenkinsxio/builder-jx:2.0.842-199
+docker tag googlecontainer/heapster:v1.5.2 k8s.gcr.io/heapster:v1.5.2
+docker tag xinglongjian/jenkinsx:0.0.80 gcr.io/jenkinsxio/jenkinsx:0.0.80
+docker tag xinglongjian/nexus:0.1.7 gcr.io/jenkinsxio/nexus:0.1.7
+docker tag xinglongjian/jx:2.0.645 gcr.io/jenkinsxio/jx:2.0.645
+docker tag googlecontainer/addon-resizer:1.7 k8s.gcr.io/addon-resizer:1.7
+
+
+```
+
+
+
+镜像拉取下来之后，可能还会遇到几个pod pending的状态：
+
+```shell
+[root@master ~]# kubectl get pods
+NAME                                           READY   STATUS    RESTARTS   AGE
+jenkins-5744dd7454-n8p8j                       0/1     Pending   0          20s
+jenkins-x-chartmuseum-774f8b95b-6r89x          0/1     Pending   0          20s
+jenkins-x-controllerrole-99b87c4b8-grfsl       1/1     Running   0          20s
+jenkins-x-controllerteam-5447bb4db8-8v6r7      1/1     Running   0          20s
+jenkins-x-controllerworkflow-f79544447-6jchn   1/1     Running   0          20s
+jenkins-x-docker-registry-dbf6889cd-pxkl9      0/1     Pending   0          20s
+jenkins-x-heapster-78fd4ccdc9-psjkc            2/2     Running   0          20s
+jenkins-x-nexus-b87fb7f7b-s4m4l                0/1     Pending   0          20s
+```
+
+查看了一下，实际pending的原因是因为pvc处于pending状态，没有对应的pv：
+
+```shell
+[root@master ~]# kubectl get pvc
+NAME                        STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+jenkins                     Pending                                                     2d17h
+jenkins-x-chartmuseum       Pending                                                     2d17h
+jenkins-x-docker-registry   Pending                                                     2d17h
+jenkins-x-nexus             Pending                                                     2d17h
+```
+
+然后在jx的github仓库的issue中可以找到有人有类似的提问[16]：
+
+在此issue的讨论中，确认了问题是缺少pv导致的，根据此issue中讨论的解决方法，确认在本地安装时需要创建StorgeClass来确保PVC可以绑定PV，具体可见[17]，操作过程请参考[18]
+
 
 
 注意：
+
+如果加了--on-premise，不会出现以下情况。
 
 如果安装过程中出现：
 
@@ -341,7 +487,7 @@ helm install stable/nginx-ingress --name jxing --set "rbac.create=true,controlle
 成功之后，重新执行：
 
 ```shell
-jx install --provider=kubernetes
+jx install --provider=kubernetes --domain icedsoulk8s.cn --on-premise
 ```
 
 
@@ -361,5 +507,10 @@ jx install --provider=kubernetes
 11. 利用Helm部署Ingress：https://blog.csdn.net/bbwangj/article/details/82863042
 12. StackOverFlow Q:kubernetes service external ip pending ：https://stackoverflow.com/questions/44110876/kubernetes-service-external-ip-pending
 13. Helm Hub nginx-ingress: https://hub.helm.sh/charts/stable/nginx-ingress
+14. Jenkinx X piplines engine：https://jenkins-x.io/news/jenkins-x-next-gen-pipeline-engine/
+15. Jenkinx issue:support for kubernetes1.16：https://github.com/jenkins-x/jx/issues/5675
+16. Github-jx-issue:https://github.com/jenkins-x/jx/issues/1317
+17. Kubernetes StrogeClass:https://kubernetes.io/docs/concepts/storage/storage-classes/
+18. PV,PVC,NFS:https://wiki.icedsoul.cn/?file=008-%E5%BE%AE%E6%9C%8D%E5%8A%A1/001-Kubernetes/004-Kubernetes%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/001-PV%20PVC
 
 flux-GitOps：https://github.com/fluxcd/flux

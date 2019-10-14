@@ -94,7 +94,27 @@ status: {}
 
 ```
 
+## 创建动态存储
+
+使用helm安装：
+
+```shell
+helm install stable/nfs-client-provisioner --set nfs.server=10.141.211.176 --set nfs.path=/nfs-share
+```
+
+不使用helm安装方式请参考[4]。
+
+然后设置该StorageClass为默认的：
+
+```shell
+kubectl patch storageclass nfs-client -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+```
+
+
+
 ## 参考资料
+
 1. 《Kubernetes权威指南》 第二版 龚正，吴治辉等 电子工业出版社
 2. 《每天五分钟 玩转Kubernetes》 CloudMan 清华大学出版社
 3. Kubernetes-基于NFS的存储：https://www.kubernetes.org.cn/4022.html
+4. Kubernetes 集群使用 NFS 网络文件存储:https://blog.csdn.net/aixiaoyang168/article/details/83988253

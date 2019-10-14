@@ -100,6 +100,7 @@
     - **Kubernetes相关知识**
         - [PV PVC](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/001-PV PVC "PV PVC")
         - [Kubernetes集群增加节点](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/002-Kubernetes集群增加节点 "Kubernetes集群增加节点")
+        - [StrogeClass](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/003-StrogeClass "StrogeClass")
 - **Spring Cloud**
 - **ServiceComb**
     - [ServiceComb初体验](?file=008-微服务/003-ServiceComb/001-ServiceComb初体验 "ServiceComb初体验")
@@ -120,6 +121,7 @@
         - [使用Kieker监控Spring MVC项目](?file=009-部署&运维/002-监控/002-单体系统监控/002-使用Kieker监控Spring MVC项目 "使用Kieker监控Spring MVC项目")
 - **容器**
     - [The Docker Book](?file=009-部署&运维/003-容器/001-The Docker Book "The Docker Book")
+    - [搭建私有Docker镜像服务器](?file=009-部署&运维/003-容器/002-搭建私有Docker镜像服务器 "搭建私有Docker镜像服务器")
 
 ##### 常用工具相关
 - **Git相关**

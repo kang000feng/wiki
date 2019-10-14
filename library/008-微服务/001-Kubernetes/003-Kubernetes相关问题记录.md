@@ -190,11 +190,12 @@ sudo docker tag imdingtalk/coredns:1.3.1 k8s.gcr.io/coredns:1.3.1
 
 ## Kubelet启动失败
 
-试着同步一下时间，搞了很久最后同步时间之后问题解决了。
+目前kubelet启动失败的原因是centos版本问题，centos7.2版本的kubelet已确认无法启动。
+
+使用如下命令查看系统版本。
 
 ```shell
-yum install ntpdate -y
-ntpdate 0.asia.pool.ntp.org
+cat /etc/redhat-release
 ```
 
 
