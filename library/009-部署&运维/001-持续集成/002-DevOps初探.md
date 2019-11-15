@@ -364,6 +364,8 @@ draft init
 jx install --provider=kubernetes --domain icedsoulk8s.cn --on-premise
 # 如果安装的helm3
 jx install --provider=kubernetes --helm3 --domain icedsoulk8s.cn --on-premise
+
+jx install --provider=kubernetes --git-provider-url=http://10.141.211.178/ --git-username=root --git-api-token=zkPsNdzzjnxXnrCL3JZi --domain icedsoul.cn --on-premise
 ```
 
 这个需要等待一段时间。
@@ -415,7 +417,40 @@ docker tag xinglongjian/jenkinsx:0.0.80 gcr.io/jenkinsxio/jenkinsx:0.0.80
 docker tag xinglongjian/nexus:0.1.7 gcr.io/jenkinsxio/nexus:0.1.7
 docker tag xinglongjian/jx:2.0.645 gcr.io/jenkinsxio/jx:2.0.645
 docker tag googlecontainer/addon-resizer:1.7 k8s.gcr.io/addon-resizer:1.7
+```
 
+
+
+
+
+```
+docker pull xinglongjian/crier:v20191001-b0861a4
+docker pull xinglongjian/deck:v20191001-b0861a4
+docker pull xinglongjian/hook:v20191001-b0861a4
+docker pull xinglongjian/horologium:v20191001-b0861a4
+docker pull xinglongjian/builder-go:2.0.851-206
+docker pull xinglongjian/builder-jx:2.0.851-206
+docker pull xinglongjian/pipeline:v20191001-b0861a4
+docker pull xinglongjian/builder-maven:2.0.851-206
+docker pull xinglongjian/plank:v20191001-b0861a4
+docker pull xinglongjian/sinker:v20191001-b0861a4
+docker pull xinglongjian/controller:v0.5.1
+docker pull xinglongjian/webhook:v0.5.1
+docker pull xinglongjian/tide:v20191001-b0861a4
+
+docker tag xinglongjian/crier:v20191001-b0861a4 gcr.io/jenkinsxio/prow/crier:v20191001-b0861a4
+docker tag xinglongjian/deck:v20191001-b0861a4 gcr.io/jenkinsxio/prow/deck:v20191001-b0861a4
+docker tag xinglongjian/hook:v20191001-b0861a4 gcr.io/jenkinsxio/prow/hook:v20191001-b0861a4
+docker tag xinglongjian/horologium:v20191001-b0861a4 gcr.io/jenkinsxio/prow/horologium:v20191001-b0861a4
+docker tag xinglongjian/builder-go:2.0.851-206 gcr.io/jenkinsxio/builder-go:2.0.966-303
+docker tag xinglongjian/builder-jx:2.0.851-206 gcr.io/jenkinsxio/builder-jx:2.0.966-303
+docker tag xinglongjian/pipeline:v20191001-b0861a4 gcr.io/jenkinsxio/prow/pipeline:v20191001-b0861a4
+docker tag xinglongjian/builder-maven:2.0.851-206 gcr.io/jenkinsxio/builder-maven:2.0.966-303
+docker tag xinglongjian/plank:v20191001-b0861a4 gcr.io/jenkinsxio/prow/plank:v20191001-b0861a4
+docker tag xinglongjian/sinker:v20191001-b0861a4 gcr.io/jenkinsxio/prow/sinker:v20191001-b0861a4
+docker tag xinglongjian/controller:v0.5.1 gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.5.1
+docker tag xinglongjian/webhook:v0.5.1 gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.5.1
+docker tag xinglongjian/tide:v20191001-b0861a4 gcr.io/jenkinsxio/prow/tide:v20191001-b0861a4
 
 ```
 
@@ -453,6 +488,8 @@ jenkins-x-nexus             Pending                                             
 
 
 
+最后安装遇到了
+
 注意：
 
 如果加了--on-premise，不会出现以下情况。
@@ -488,6 +525,22 @@ helm install stable/nginx-ingress --name jxing --set "rbac.create=true,controlle
 
 ```shell
 jx install --provider=kubernetes --domain icedsoulk8s.cn --on-premise
+```
+
+
+
+
+
+## 卸载Install
+
+```
+git clone https://github.com/ahmetb/kubectx
+sudo cp kubectx/kube* /usr/local/bin/
+
+kubectx
+
+jx uninstall
+# 输入上面所看到的context name
 ```
 
 

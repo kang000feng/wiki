@@ -114,6 +114,7 @@
 - **持续集成**
     - [Jenkins CI with Docker Compose](?file=009-部署&运维/001-持续集成/001-Jenkins CI with Docker Compose "Jenkins CI with Docker Compose")
     - [DevOps初探](?file=009-部署&运维/001-持续集成/002-DevOps初探 "DevOps初探")
+    - [Jenkins X](?file=009-部署&运维/001-持续集成/003-Jenkins X "Jenkins X")
 - **监控**
     - **分布式系统监控**
     - **单体系统监控**
@@ -122,6 +123,7 @@
 - **容器**
     - [The Docker Book](?file=009-部署&运维/003-容器/001-The Docker Book "The Docker Book")
     - [搭建私有Docker镜像服务器](?file=009-部署&运维/003-容器/002-搭建私有Docker镜像服务器 "搭建私有Docker镜像服务器")
+    - [配置Docker远程访问](?file=009-部署&运维/003-容器/003-配置Docker远程访问 "配置Docker远程访问")
 
 ##### 常用工具相关
 - **Git相关**

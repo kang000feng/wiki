@@ -56,6 +56,21 @@ docker-compose -f docker-compose-jenkins.yml up
 到目前为止，我们成功地把Jenkins使用Docker-Compose启动并且运行了起来，之后我简单尝试了一下部署。选项比较多，不过可以看出来Jenkins还是非常强大的，之后我会先把WithMe这个项目给整理一下，先整理出来一套正常情况下部署和运行的流程，之后研究一下怎么使用Jenkins来自动化的完成这个过程。  
 好好学习，天天向上，加油。
 
+Jenkins 容器内执行宿主机docker
+
+```
+docker run -it -d  \
+ --restart=always -u root \
+ -v /usr/bin/docker:/usr/bin/docker \
+ -v /usr/bin/docker-compose:/usr/bin/docker-compose \
+ -v /var/run/docker.sock:/var/run/docker.sock \
+ -v /usr/lib64/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7 jenkins/jenkins:lts
+```
+
+
+
+
+
 ## 相关网址
 - Jenkins 官网： https://jenkins.io/
 - Docker Hub： https://hub.docker.com/_/jenkins
