@@ -29,6 +29,8 @@
     - [Nginx with Docker-Compose](?file=002-前端/003-Nginx/001-Nginx with Docker-Compose "Nginx with Docker-Compose")
 - **JavaScript**
     - [JS获取当前路径](?file=002-前端/004-JavaScript/001-JS获取当前路径 "JS获取当前路径")
+- **NodeJS**
+    - [NodeJS environment preparation](?file=002-前端/005-NodeJS/001-NodeJS environment preparation "NodeJS environment preparation")
 
 ##### 编程语言
 - **Java**
@@ -43,12 +45,17 @@
         - [Java Annotation](?file=003-编程语言/001-Java/002-Java Annotation/001-Java Annotation "Java Annotation")
     - **JVM**
         - [JVM相关知识](?file=003-编程语言/001-Java/003-JVM/001-JVM相关知识 "JVM相关知识")
+        - [Java Heap Dump](?file=003-编程语言/001-Java/003-JVM/002-Java Heap Dump "Java Heap Dump")
     - **jar包相关**
         - [反编译jar包](?file=003-编程语言/001-Java/004-jar包相关/001-反编译jar包 "反编译jar包")
 - **C++**
     - [C++零碎知识](?file=003-编程语言/002-C++/001-C++零碎知识 "C++零碎知识")
     - [C++ STL map使用](?file=003-编程语言/002-C++/002-C++ STL map使用 "C++ STL map使用")
     - [C++ STL queue使用](?file=003-编程语言/002-C++/003-C++ STL queue使用 "C++ STL queue使用")
+- **Python**
+    - [py2neo使用](?file=003-编程语言/003-Python/001-py2neo使用 "py2neo使用")
+    - [pandas使用](?file=003-编程语言/003-Python/002-pandas使用 "pandas使用")
+    - [python语法](?file=003-编程语言/003-Python/003-python语法 "python语法")
 
 ##### 简单算法
 - **图论**
@@ -62,13 +69,13 @@
 - **搜索**
     - [B+树](?file=004-简单算法/003-搜索/001-B+树 "B+树")
     - [扩展哈希](?file=004-简单算法/003-搜索/002-扩展哈希 "扩展哈希")
-- **分治**
 - **动态规划**
     - [最长上升子序列](?file=004-简单算法/005-动态规划/001-最长上升子序列 "最长上升子序列")
     - [最长公共子序列](?file=004-简单算法/005-动态规划/002-最长公共子序列 "最长公共子序列")
 
 ##### 数据库
 - **关系型数据库**
+    - [SQL语法](?file=005-数据库/001-关系型数据库/001-SQL语法 "SQL语法")
 - **NoSQL**
     - **图数据库**
         - **Neo4j**
@@ -78,19 +85,21 @@
     - **Hibernate**
         - [Hibernate零碎知识点](?file=005-数据库/003-ORM框架/001-Hibernate/001-Hibernate零碎知识点 "Hibernate零碎知识点")
 
-##### 操作系统
-
-##### JavaWeb
+##### Web开发
 - **Spring**
-    - [Spring 自定义注解](?file=007-JavaWeb/001-Spring/001-Spring 自定义注解 "Spring 自定义注解")
-    - [在Spring启动时执行方法](?file=007-JavaWeb/001-Spring/002-在Spring启动时执行方法 "在Spring启动时执行方法")
+    - [Spring 自定义注解](?file=007-Web开发/001-Spring/001-Spring 自定义注解 "Spring 自定义注解")
+    - [在Spring启动时执行方法](?file=007-Web开发/001-Spring/002-在Spring启动时执行方法 "在Spring启动时执行方法")
     - **Spring AOP**
-        - [Spring AOP运行](?file=007-JavaWeb/001-Spring/003-Spring AOP/001-Spring AOP运行 "Spring AOP运行")
-        - [Spring AOP踩坑记录](?file=007-JavaWeb/001-Spring/003-Spring AOP/002-Spring AOP踩坑记录 "Spring AOP踩坑记录")
-- **安全**
-- **项目**
+        - [Spring AOP运行](?file=007-Web开发/001-Spring/003-Spring AOP/001-Spring AOP运行 "Spring AOP运行")
+        - [Spring AOP踩坑记录](?file=007-Web开发/001-Spring/003-Spring AOP/002-Spring AOP踩坑记录 "Spring AOP踩坑记录")
+- **通信**
+    - **Http相关**
+        - [Http请求相关知识点](?file=007-Web开发/002-通信/001-Http相关/001-Http请求相关知识点 "Http请求相关知识点")
+- **中间件**
+    - [Flink](?file=007-Web开发/003-中间件/001-Flink "Flink")
+    - [Kafka](?file=007-Web开发/003-中间件/002-Kafka "Kafka")
 - **其它**
-    - [开发知识点](?file=007-JavaWeb/004-其它/001-开发知识点 "开发知识点")
+    - [开发知识点](?file=007-Web开发/004-其它/001-开发知识点 "开发知识点")
 
 ##### 微服务
 - **Kubernetes**
@@ -101,7 +110,6 @@
         - [PV PVC](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/001-PV PVC "PV PVC")
         - [Kubernetes集群增加节点](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/002-Kubernetes集群增加节点 "Kubernetes集群增加节点")
         - [StrogeClass](?file=008-微服务/001-Kubernetes/004-Kubernetes相关知识/003-StrogeClass "StrogeClass")
-- **Spring Cloud**
 - **ServiceComb**
     - [ServiceComb初体验](?file=008-微服务/003-ServiceComb/001-ServiceComb初体验 "ServiceComb初体验")
 - **微服务资料**
@@ -116,7 +124,8 @@
     - [DevOps初探](?file=009-部署&运维/001-持续集成/002-DevOps初探 "DevOps初探")
     - [Jenkins X](?file=009-部署&运维/001-持续集成/003-Jenkins X "Jenkins X")
 - **监控**
-    - **分布式系统监控**
+    - **微服务系统监控**
+        - [Jaeger](?file=009-部署&运维/002-监控/001-微服务系统监控/001-Jaeger "Jaeger")
     - **单体系统监控**
         - [Kieker的学习与使用](?file=009-部署&运维/002-监控/002-单体系统监控/001-Kieker的学习与使用 "Kieker的学习与使用")
         - [使用Kieker监控Spring MVC项目](?file=009-部署&运维/002-监控/002-单体系统监控/002-使用Kieker监控Spring MVC项目 "使用Kieker监控Spring MVC项目")
@@ -124,6 +133,8 @@
     - [The Docker Book](?file=009-部署&运维/003-容器/001-The Docker Book "The Docker Book")
     - [搭建私有Docker镜像服务器](?file=009-部署&运维/003-容器/002-搭建私有Docker镜像服务器 "搭建私有Docker镜像服务器")
     - [配置Docker远程访问](?file=009-部署&运维/003-容器/003-配置Docker远程访问 "配置Docker远程访问")
+- **发布**
+    - [Ansible](?file=009-部署&运维/004-发布/001-Ansible "Ansible")
 
 ##### 常用工具相关
 - **Git相关**
@@ -137,6 +148,7 @@
 - **日常知识**
     - [申请https证书](?file=010-常用工具相关/004-日常知识/001-申请https证书 "申请https证书")
     - [阿里云服务器购买方案](?file=010-常用工具相关/004-日常知识/002-阿里云服务器购买方案 "阿里云服务器购买方案")
+    - [JSON](?file=010-常用工具相关/004-日常知识/003-JSON "JSON")
 
 ##### 项目
 - **WithMe**
@@ -162,25 +174,15 @@
         - [多罗罗](?file=013-个人爱好/001-动画/003-2019年1月新番/003-多罗罗 "多罗罗")
     - **2019年4月新番**
         - [4月新番](?file=013-个人爱好/001-动画/004-2019年4月新番/001-4月新番 "4月新番")
-    - **2019年7月新番**
 - **漫画**
     - **日漫**
         - [五等分的新娘](?file=013-个人爱好/002-漫画/001-日漫/001-五等分的新娘 "五等分的新娘")
         - [进击的巨人](?file=013-个人爱好/002-漫画/001-日漫/002-进击的巨人 "进击的巨人")
-    - **国漫**
-- **小说**
-    - **网络小说.md**
-    - **日本轻小说.md**
-    - **出版书籍**
-    - **杂志书刊等.md**
 - **游戏**
     - **手机游戏**
         - [崩坏3](?file=013-个人爱好/004-游戏/001-手机游戏/001-崩坏3 "崩坏3")
         - [电击文库零境交错](?file=013-个人爱好/004-游戏/001-手机游戏/002-电击文库零境交错 "电击文库零境交错")
         - [决战平安京](?file=013-个人爱好/004-游戏/001-手机游戏/003-决战平安京 "决战平安京")
-    - **电脑游戏**
-        - **网络游戏**
-        - **单机游戏**
 - **电影**
     - **欧美电影**
         - **科幻**
